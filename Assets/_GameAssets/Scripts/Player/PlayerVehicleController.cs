@@ -49,6 +49,7 @@ public class PlayerVehicleController : MonoBehaviour
         // SUSPENSION
         UpdateSuspension();
         // STEERING - YER YÖN
+        UpdateSteering();
         // ACCELERATION - HIZLANMA
         // BRAKE - FREN
         // AIR RESISTANCE - HAVA DİRENCİ
@@ -77,6 +78,20 @@ public class PlayerVehicleController : MonoBehaviour
 
             _vehicleRigidBody.AddForceAtPosition(force * transform.up, GetSpringPosition(id));
 
+        }
+    }
+
+    private void UpdateSteering()
+    {
+        foreach(WheelType wheelType in _wheels)
+        {
+            if(!IsGrounded(wheelType))
+            {
+                continue;
+            }
+
+            Vector3 springPosition = GetSpringPosition(wheelType);
+            Vector3 slideDirection = GetWheelSlideDirection(wheelType);
         }
     }
 
@@ -122,6 +137,30 @@ public class PlayerVehicleController : MonoBehaviour
             WheelType.BackRight => new Vector3(boxSize.x * (0.5f - paddingX), boxBottom, boxSize.z * (paddingZ - 0.5f)),
             _ => default
         };
+    }
+
+    private void GetWheelSlideDirection(WheelType wheelType)
+    {
+        Vector3 forward = GetWheelRollDirection(wheelType);
+    }
+
+    private Vector3 GetWheelRollDirection(WheelType wheelType)
+    {
+        bool frontWheels = wheelType == WheelType.FrontLeft || wheelType == WheelType.FrontRight;
+
+        if(frontWheels)
+        {
+            var steerQuaternion = Quaternion.AngleAxis(_steerInput * _vehicleSettings.SteerAngle, Vector3.up);
+        }
+        else
+        {
+            return transform.forward;
+        }
+    }
+
+    private bool IsGrounded(WheelType wheelType)
+    {
+        return _springDatas[wheelType]._currentLength < _vehicleSettings.SpringRestLength;
     }
 }
 

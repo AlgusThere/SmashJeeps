@@ -13,12 +13,16 @@ public class VehicleSettingsSO : ScriptableObject
     [SerializeField] private float _springStrength;
     [SerializeField] private float _springDamper;
 
+    [Header("Handling")]
+    [SerializeField] private float _steerAngle;
+
 
 
     public float WheelsPaddingX => _wheelsPaddingX;
     public float WheelsPaddingZ => _wheelsPaddingZ;
     public float SpringRestLength => _springRestLenght;
     public float SpringStrength => _springStrength;
-    public float SpringDamper=> _springDamper;
+    public float SpringDamper => _springDamper;
+    public float SteerAngle => _steerAngle;
 
 }
